@@ -1,7 +1,7 @@
 #include "instance.h"
 
-namespace ohEngine {
-    void ohInstance::init() {
+namespace nivalis {
+    void nvInstance::init() {
         while(!instance.shouldClose())
             glfwPollEvents();
     }

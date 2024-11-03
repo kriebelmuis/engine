@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-namespace ohEngine {
+namespace nivalis {
     struct SwapChainSupportDetails {
         VkSurfaceCapabilitiesKHR capabilities;
         std::vector<VkSurfaceFormatKHR> formats;
@@ -22,7 +22,7 @@ namespace ohEngine {
         bool isComplete() { return graphicsFamilyHasValue && presentFamilyHasValue; }
     };
 
-    class ohDevice {
+    class nvDevice {
     public:
 //#ifdef NDEBUG
 //        const bool enableValidationLayers = false;
@@ -30,14 +30,14 @@ namespace ohEngine {
         const bool enableValidationLayers = true;
 //#endif
 
-        ohDevice(ohWindow &window);
-        ~ohDevice();
+        nvDevice(nvWindow &window);
+        ~nvDevice();
 
         // Not copyable or movable
-        ohDevice(const ohDevice &) = delete;
-        void operator=(const ohDevice &) = delete;
-        ohDevice(ohDevice &&) = delete;
-        ohDevice &operator=(ohDevice &&) = delete;
+        nvDevice(const nvDevice &) = delete;
+        void operator=(const nvDevice &) = delete;
+        nvDevice(nvDevice &&) = delete;
+        nvDevice &operator=(nvDevice &&) = delete;
 
         VkCommandPool getCommandPool() { return commandPool; }
         VkDevice device() { return device_; }
@@ -95,7 +95,7 @@ namespace ohEngine {
         VkInstance instance;
         VkDebugUtilsMessengerEXT debugMessenger;
         VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
-        ohWindow &window;
+        nvWindow &window;
         VkCommandPool commandPool;
 
         VkDevice device_;

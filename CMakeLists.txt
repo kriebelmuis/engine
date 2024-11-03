@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.25)
-project(ohEngine)
+project(nivalis)
 
 # prepare dependencies
 include(FetchContent)
@@ -22,7 +22,7 @@ endif()
 set(CMAKE_CXX_STANDARD 17)
 
 # add files
-add_executable(ohEngine
+add_executable(nivalis
         engine/window.h
         engine/window.cpp
         engine/instance.h
@@ -39,4 +39,4 @@ add_executable(ohEngine
 file(COPY shaders DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
 
 # link libraries
-target_link_libraries(ohEngine glfw ${Vulkan_LIBRARIES})
+target_link_libraries(nivalis glfw ${Vulkan_LIBRARIES})

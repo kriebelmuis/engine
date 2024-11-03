@@ -6,7 +6,7 @@
 #include <set>
 #include <unordered_set>
 
-namespace ohEngine {
+namespace nivalis {
 
 // local callback functions
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
@@ -47,7 +47,7 @@ void DestroyDebugUtilsMessengerEXT(
 }
 
 // class member functions
-ohDevice::ohDevice(ohWindow &window) : window{window} {
+nvDevice::nvDevice(nvWindow &window) : window{window} {
   createInstance();
   setupDebugMessenger();
   createSurface();
@@ -56,7 +56,7 @@ ohDevice::ohDevice(ohWindow &window) : window{window} {
   createCommandPool();
 }
 
-ohDevice::~ohDevice() {
+nvDevice::~nvDevice() {
   vkDestroyCommandPool(device_, commandPool, nullptr);
   vkDestroyDevice(device_, nullptr);
 
@@ -68,16 +68,16 @@ ohDevice::~ohDevice() {
   vkDestroyInstance(instance, nullptr);
 }
 
-void ohDevice::createInstance() {
+void nvDevice::createInstance() {
   if (enableValidationLayers && !checkValidationLayerSupport()) {
     throw std::runtime_error("validation layers requested, but not available!");
   }
 
   VkApplicationInfo appInfo = {};
   appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-  appInfo.pApplicationName = "ohEngine Base";
+  appInfo.pApplicationName = "nvEngine Base";
   appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
-  appInfo.pEngineName = "ohEngine";
+  appInfo.pEngineName = "nvEngine";
   appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
   appInfo.apiVersion = VK_API_VERSION_1_0;
 
@@ -108,7 +108,7 @@ void ohDevice::createInstance() {
   hasGflwRequiredInstanceExtensions();
 }
 
-void ohDevice::pickPhysicalDevice() {
+void nvDevice::pickPhysicalDevice() {
   uint32_t deviceCount = 0;
   vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
   if (deviceCount == 0) {
@@ -133,7 +133,7 @@ void ohDevice::pickPhysicalDevice() {
   std::cout << "physical device: " << properties.deviceName << std::endl;
 }
 
-void ohDevice::createLogicalDevice() {
+void nvDevice::createLogicalDevice() {
   QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
 
   std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
@@ -179,7 +179,7 @@ void ohDevice::createLogicalDevice() {
   vkGetDeviceQueue(device_, indices.presentFamily, 0, &presentQueue_);
 }
 
-void ohDevice::createCommandPool() {
+void nvDevice::createCommandPool() {
   QueueFamilyIndices queueFamilyIndices = findPhysicalQueueFamilies();
 
   VkCommandPoolCreateInfo poolInfo = {};
@@ -193,9 +193,9 @@ void ohDevice::createCommandPool() {
   }
 }
 
-void ohDevice::createSurface() { window.createWindowSurface(instance, &surface_); }
+void nvDevice::createSurface() { window.createWindowSurface(instance, &surface_); }
 
-bool ohDevice::isDeviceSuitable(VkPhysicalDevice device) {
+bool nvDevice::isDeviceSuitable(VkPhysicalDevice device) {
   QueueFamilyIndices indices = findQueueFamilies(device);
 
   bool extensionsSupported = checkDeviceExtensionSupport(device);
@@ -213,7 +213,7 @@ bool ohDevice::isDeviceSuitable(VkPhysicalDevice device) {
          supportedFeatures.samplerAnisotropy;
 }
 
-void ohDevice::populateDebugMessengerCreateInfo(
+void nvDevice::populateDebugMessengerCreateInfo(
     VkDebugUtilsMessengerCreateInfoEXT &createInfo) {
   createInfo = {};
   createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
@@ -226,7 +226,7 @@ void ohDevice::populateDebugMessengerCreateInfo(
   createInfo.pUserData = nullptr;  // Optional
 }
 
-void ohDevice::setupDebugMessenger() {
+void nvDevice::setupDebugMessenger() {
   if (!enableValidationLayers) return;
   VkDebugUtilsMessengerCreateInfoEXT createInfo;
   populateDebugMessengerCreateInfo(createInfo);
@@ -235,7 +235,7 @@ void ohDevice::setupDebugMessenger() {
   }
 }
 
-bool ohDevice::checkValidationLayerSupport() {
+bool nvDevice::checkValidationLayerSupport() {
   uint32_t layerCount;
   vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
 
@@ -260,7 +260,7 @@ bool ohDevice::checkValidationLayerSupport() {
   return true;
 }
 
-std::vector<const char *> ohDevice::getRequiredExtensions() {
+std::vector<const char *> nvDevice::getRequiredExtensions() {
   uint32_t glfwExtensionCount = 0;
   const char **glfwExtensions;
   glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
@@ -274,7 +274,7 @@ std::vector<const char *> ohDevice::getRequiredExtensions() {
   return extensions;
 }
 
-void ohDevice::hasGflwRequiredInstanceExtensions() {
+void nvDevice::hasGflwRequiredInstanceExtensions() {
   uint32_t extensionCount = 0;
   vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
   std::vector<VkExtensionProperties> extensions(extensionCount);
@@ -297,7 +297,7 @@ void ohDevice::hasGflwRequiredInstanceExtensions() {
   }
 }
 
-bool ohDevice::checkDeviceExtensionSupport(VkPhysicalDevice device) {
+bool nvDevice::checkDeviceExtensionSupport(VkPhysicalDevice device) {
   uint32_t extensionCount;
   vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, nullptr);
 
@@ -317,7 +317,7 @@ bool ohDevice::checkDeviceExtensionSupport(VkPhysicalDevice device) {
   return requiredExtensions.empty();
 }
 
-QueueFamilyIndices ohDevice::findQueueFamilies(VkPhysicalDevice device) {
+QueueFamilyIndices nvDevice::findQueueFamilies(VkPhysicalDevice device) {
   QueueFamilyIndices indices;
 
   uint32_t queueFamilyCount = 0;
@@ -348,7 +348,7 @@ QueueFamilyIndices ohDevice::findQueueFamilies(VkPhysicalDevice device) {
   return indices;
 }
 
-SwapChainSupportDetails ohDevice::querySwapChainSupport(VkPhysicalDevice device) {
+SwapChainSupportDetails nvDevice::querySwapChainSupport(VkPhysicalDevice device) {
   SwapChainSupportDetails details;
   vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, surface_, &details.capabilities);
 
@@ -374,7 +374,7 @@ SwapChainSupportDetails ohDevice::querySwapChainSupport(VkPhysicalDevice device)
   return details;
 }
 
-VkFormat ohDevice::findSupportedFormat(
+VkFormat nvDevice::findSupportedFormat(
     const std::vector<VkFormat> &candidates, VkImageTiling tiling, VkFormatFeatureFlags features) {
   for (VkFormat format : candidates) {
     VkFormatProperties props;
@@ -390,7 +390,7 @@ VkFormat ohDevice::findSupportedFormat(
   throw std::runtime_error("failed to find supported format!");
 }
 
-uint32_t ohDevice::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties) {
+uint32_t nvDevice::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties) {
   VkPhysicalDeviceMemoryProperties memProperties;
   vkGetPhysicalDeviceMemoryProperties(physicalDevice, &memProperties);
   for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++) {
@@ -403,7 +403,7 @@ uint32_t ohDevice::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags pro
   throw std::runtime_error("failed to find suitable memory type!");
 }
 
-void ohDevice::createBuffer(
+void nvDevice::createBuffer(
     VkDeviceSize size,
     VkBufferUsageFlags usage,
     VkMemoryPropertyFlags properties,
@@ -434,7 +434,7 @@ void ohDevice::createBuffer(
   vkBindBufferMemory(device_, buffer, bufferMemory, 0);
 }
 
-VkCommandBuffer ohDevice::beginSingleTimeCommands() {
+VkCommandBuffer nvDevice::beginSingleTimeCommands() {
   VkCommandBufferAllocateInfo allocInfo{};
   allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
   allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
@@ -452,7 +452,7 @@ VkCommandBuffer ohDevice::beginSingleTimeCommands() {
   return commandBuffer;
 }
 
-void ohDevice::endSingleTimeCommands(VkCommandBuffer commandBuffer) {
+void nvDevice::endSingleTimeCommands(VkCommandBuffer commandBuffer) {
   vkEndCommandBuffer(commandBuffer);
 
   VkSubmitInfo submitInfo{};
@@ -466,7 +466,7 @@ void ohDevice::endSingleTimeCommands(VkCommandBuffer commandBuffer) {
   vkFreeCommandBuffers(device_, commandPool, 1, &commandBuffer);
 }
 
-void ohDevice::copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size) {
+void nvDevice::copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size) {
   VkCommandBuffer commandBuffer = beginSingleTimeCommands();
 
   VkBufferCopy copyRegion{};
@@ -478,7 +478,7 @@ void ohDevice::copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize s
   endSingleTimeCommands(commandBuffer);
 }
 
-void ohDevice::copyBufferToImage(
+void nvDevice::copyBufferToImage(
     VkBuffer buffer, VkImage image, uint32_t width, uint32_t height, uint32_t layerCount) {
   VkCommandBuffer commandBuffer = beginSingleTimeCommands();
 
@@ -505,7 +505,7 @@ void ohDevice::copyBufferToImage(
   endSingleTimeCommands(commandBuffer);
 }
 
-void ohDevice::createImageWithInfo(
+void nvDevice::createImageWithInfo(
     const VkImageCreateInfo &imageInfo,
     VkMemoryPropertyFlags properties,
     VkImage &image,

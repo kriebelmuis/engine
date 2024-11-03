@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-namespace ohEngine {
-    struct ohPipelineConfig {
+namespace nivalis {
+    struct nvPipelineConfig {
         VkViewport viewport;
         VkRect2D scissor;
         VkPipelineViewportStateCreateInfo viewportInfo;
@@ -21,25 +21,25 @@ namespace ohEngine {
         uint32_t subpass = 0;
     };
 
-    class ohPipeline {
+    class nvPipeline {
     public:
-        ohPipeline(ohDevice& device, const std::string& vertPath, const std::string& fragPath, const ohPipelineConfig& config);
-        ~ohPipeline();
+        nvPipeline(nvDevice& device, const std::string& vertPath, const std::string& fragPath, const nvPipelineConfig& config);
+        ~nvPipeline();
 
-        ohPipeline(const ohPipeline&) = delete;
-        void operator=(const ohPipeline&) = delete;
+        nvPipeline(const nvPipeline&) = delete;
+        void operator=(const nvPipeline&) = delete;
 
-        static ohPipelineConfig defaultPipelineConfig(uint32_t width, uint32_t height);
+        static nvPipelineConfig defaultPipelineConfig(uint32_t width, uint32_t height);
 
     private:
         static std::vector<char> readFile(const std::string& path);
 
-        void createPipeline(const std::string& vertPath, const std::string& fragPath, const ohPipelineConfig& config);
+        void createPipeline(const std::string& vertPath, const std::string& fragPath, const nvPipelineConfig& config);
         void createShaderModule(const std::vector<char>& code, VkShaderModule* shaderModule);
 
-        ohDevice& device;
+        nvDevice& device;
         VkPipeline pipeline;
-        VkShaderModule ohFragModule;
-        VkShaderModule ohVertModule;
+        VkShaderModule nvFragModule;
+        VkShaderModule nvVertModule;
     };
 }

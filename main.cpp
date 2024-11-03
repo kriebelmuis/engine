@@ -3,7 +3,7 @@
 #include "engine/instance.h"
 
 int main() {
-    ohEngine::ohInstance app{};
+    nivalis::nvInstance app{};
 
     try {
         app.init();

@@ -4,19 +4,19 @@
 #include <stdexcept>
 #include <iostream>
 
-namespace ohEngine {
-    ohPipeline::ohPipeline(ohDevice& device, const std::string& vertPath, const std::string& fragPath, const ohPipelineConfig& config) : device{device} {
+namespace nivalis {
+    nvPipeline::nvPipeline(nvDevice& device, const std::string& vertPath, const std::string& fragPath, const nvPipelineConfig& config) : device{device} {
         createPipeline(vertPath, fragPath, config);
     }
 
-    ohPipeline::~ohPipeline() {
-        vkDestroyShaderModule(device.device(), ohVertModule, nullptr);
-        vkDestroyShaderModule(device.device(), ohFragModule, nullptr);
+    nvPipeline::~nvPipeline() {
+        vkDestroyShaderModule(device.device(), nvVertModule, nullptr);
+        vkDestroyShaderModule(device.device(), nvFragModule, nullptr);
 
         vkDestroyPipeline(device.device(), pipeline, nullptr);
     }
 
-    std::vector<char> ohPipeline::readFile(const std::string& path) {
+    std::vector<char> nvPipeline::readFile(const std::string& path) {
         std::ifstream file {path, std::ios::ate | std::ios::binary};
         if (!file.is_open()) {
             throw std::runtime_error("failed to open shader: " + path);
@@ -32,13 +32,13 @@ namespace ohEngine {
         return buffer;
     }
 
-    void ohPipeline::createPipeline(const std::string &vertPath, const std::string &fragPath, const ohPipelineConfig& config) {
+    void nvPipeline::createPipeline(const std::string &vertPath, const std::string &fragPath, const nvPipelineConfig& config) {
         auto vertCode = readFile(vertPath);
         auto fragCode = readFile(fragPath);
 
         // create shader module
-        createShaderModule(vertCode, &ohVertModule);
-        createShaderModule(fragCode, &ohFragModule);
+        createShaderModule(vertCode, &nvVertModule);
+        createShaderModule(fragCode, &nvFragModule);
 
         // frag & vert info
         VkPipelineShaderStageCreateInfo shaderStages[2];
@@ -46,7 +46,7 @@ namespace ohEngine {
         // vertex info
         shaderStages[0].sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
         shaderStages[0].stage = VK_SHADER_STAGE_VERTEX_BIT;
-        shaderStages[0].module = ohVertModule;
+        shaderStages[0].module = nvVertModule;
         shaderStages[0].pName = "main";
         shaderStages[0].flags = 0;
         shaderStages[0].pNext = nullptr;
@@ -55,7 +55,7 @@ namespace ohEngine {
         // fragment info
         shaderStages[1].sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
         shaderStages[1].stage = VK_SHADER_STAGE_FRAGMENT_BIT;
-        shaderStages[1].module = ohFragModule;
+        shaderStages[1].module = nvFragModule;
         shaderStages[1].pName = "main";
         shaderStages[1].flags = 0;
         shaderStages[1].pNext = nullptr;
@@ -91,7 +91,7 @@ namespace ohEngine {
         }
     }
 
-    void ohPipeline::createShaderModule(const std::vector<char>& code, VkShaderModule* shaderModule) {
+    void nvPipeline::createShaderModule(const std::vector<char>& code, VkShaderModule* shaderModule) {
         VkShaderModuleCreateInfo createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
         createInfo.codeSize = code.size();
@@ -102,8 +102,8 @@ namespace ohEngine {
         }
     }
 
-    ohPipelineConfig ohPipeline::defaultPipelineConfig(uint32_t width, uint32_t height) {
-        ohPipelineConfig config{};
+    nvPipelineConfig nvPipeline::defaultPipelineConfig(uint32_t width, uint32_t height) {
+        nvPipelineConfig config{};
         config.inputAssemblyInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
         config.inputAssemblyInfo.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
         config.inputAssemblyInfo.primitiveRestartEnable = VK_FALSE;

@@ -4,16 +4,16 @@
 #include "pipeline.h"
 #include "device.h"
 
-namespace ohEngine {
-    class ohInstance {
+namespace nivalis {
+    class nvInstance {
     public:
         static constexpr int WIDTH = 800;
         static constexpr int HEIGHT = 600;
 
         void init();
     private:
-        ohWindow instance{WIDTH, HEIGHT, "ohEngine"};
-        ohDevice device{instance};
-        ohPipeline pipeline{device, "shaders/shader.vert.spv", "shaders/shader.frag.spv", ohPipeline::defaultPipelineConfig(WIDTH, HEIGHT)};
+        nvWindow instance{WIDTH, HEIGHT, "nivalis"};
+        nvDevice device{instance};
+        nvPipeline pipeline{device, "shaders/shader.vert.spv", "shaders/shader.frag.spv", nvPipeline::defaultPipelineConfig(WIDTH, HEIGHT)};
     };
 }

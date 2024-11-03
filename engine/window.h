@@ -5,14 +5,14 @@
 
 #include <string>
 
-namespace ohEngine {
-    class ohWindow {
+namespace nivalis {
+    class nvWindow {
     public:
-        ohWindow(int w, int h, std::string name);
-        ~ohWindow();
+        nvWindow(int w, int h, std::string name);
+        ~nvWindow();
 
-        ohWindow(const ohWindow &) = delete;
-        ohWindow &operator=(const ohWindow &) = delete;
+        nvWindow(const nvWindow &) = delete;
+        nvWindow &operator=(const nvWindow &) = delete;
 
         bool shouldClose() {
             return glfwWindowShouldClose(window);
