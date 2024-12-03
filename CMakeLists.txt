@@ -33,6 +33,8 @@ add_executable(nivalis
         engine/device.cpp
 
         main.cpp
+        engine/swapchain.cpp
+        engine/swapchain.h
 )
 
 # copy shaders
