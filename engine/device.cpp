@@ -118,17 +118,25 @@ void nvDevice::pickPhysicalDevice() {
   std::vector<VkPhysicalDevice> devices(deviceCount);
   vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
 
+  VkPhysicalDevice bestDevice = VK_NULL_HANDLE;
   for (const auto &device : devices) {
     if (isDeviceSuitable(device)) {
-      physicalDevice = device;
-      break;
+      VkPhysicalDeviceProperties deviceProperties;
+      vkGetPhysicalDeviceProperties(device, &deviceProperties);
+      if (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU) {
+        bestDevice = device;
+        break;
+      } else if (bestDevice == VK_NULL_HANDLE) {
+        bestDevice = device;
+      }
     }
   }
 
-  if (physicalDevice == VK_NULL_HANDLE) {
+  if (bestDevice == VK_NULL_HANDLE) {
     throw std::runtime_error("failed to find a suitable GPU!");
   }
 
+  physicalDevice = bestDevice;
   vkGetPhysicalDeviceProperties(physicalDevice, &properties);
   std::cout << "physical device: " << properties.deviceName << std::endl;
 }

@@ -22,7 +22,7 @@ namespace nivalis {
             throw std::runtime_error("failed to open shader: " + path);
         }
 
-        size_t size = static_cast<size_t>(file.tellg());
+        const long long size = file.tellg();
         std::vector<char> buffer(size);
 
         file.seekg(0);
